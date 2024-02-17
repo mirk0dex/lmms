@@ -88,6 +88,7 @@ public:
 	gui::PluginView* instantiateView(QWidget* parent) override;
 
 	std::vector<Note> getMidi();
+	QString getSampleFile();
 
 private:
 	FloatModel m_noteThreshold;

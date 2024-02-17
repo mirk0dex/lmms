@@ -30,6 +30,7 @@
 #include "Clipboard.h"
 #include "DataFile.h"
 #include "Engine.h"
+#include "gui_templates.h"
 #include "InstrumentTrack.h"
 #include "SampleLoader.h"
 #include "SlicerT.h"
@@ -188,6 +189,34 @@ void SlicerTView::paintEvent(QPaintEvent* pe)
 	brush.drawText(63, s_bottomTextY, s_textBoxWidth, s_textBoxHeight, Qt::AlignCenter, tr("Fade Out"));
 	brush.drawText(127, s_bottomTextY, s_textBoxWidth, s_textBoxHeight, Qt::AlignCenter, tr("BPM"));
 	brush.drawText(188, s_bottomTextY, s_textBoxWidth, s_textBoxHeight, Qt::AlignCenter, tr("Snap"));
+
+	#define SAMPLE_NAME_WIDTH 109
+
+	// copied from AudioFileProcessorView::paintEvent(QPaintEvent*)
+	QString file_name = "";
+
+	int idx = m_slicerTParent->getSampleFile().length();
+
+	//brush.setFont(pointSize<8>(font()));
+
+	brush.setFont(QFont(brush.font().family(), 7, -1, false));
+
+	QFontMetrics fm(brush.font());
+
+	// simple algorithm for creating a text from the filename that
+	// matches in the white rectangle
+	while(idx > 0 &&
+		fm.size(Qt::TextSingleLine, file_name + "...").width() < SAMPLE_NAME_WIDTH)
+	{
+		file_name = m_slicerTParent->getSampleFile()[--idx] + file_name;
+	}
+
+	if (idx > 0)
+	{
+		file_name = "..." + file_name;
+	}
+
+	brush.drawText(71, 173, SAMPLE_NAME_WIDTH, 7, Qt::AlignCenter, file_name);
 }
 
 } // namespace gui

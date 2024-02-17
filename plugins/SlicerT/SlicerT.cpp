@@ -319,6 +319,11 @@ std::vector<Note> SlicerT::getMidi()
 	return outputNotes;
 }
 
+QString SlicerT::getSampleFile()
+{
+	return m_originalSample.sampleFile();
+}
+
 void SlicerT::updateFile(QString file)
 {
 	if (auto buffer = gui::SampleLoader::createBufferFromFile(file)) { m_originalSample = Sample(std::move(buffer)); }
